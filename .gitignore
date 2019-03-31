@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+*.lock
+*.ide
+*.ide-wal
+*.ide-shm
+*.suo
+*.pdb
+*.exe
+*.dat
+*.dll
