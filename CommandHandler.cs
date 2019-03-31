@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
-using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
 using System.Reflection;
 
 namespace UsefulDiscordBot
 {
-    class CommandHandler
+		class CommandHandler
     {
         private DiscordSocketClient client;
 
@@ -19,11 +14,9 @@ namespace UsefulDiscordBot
 
         public SocketCommandContext context;
 
-        //SocketUserMessage initializeMessage = null;
-
-        public CommandHandler(DiscordSocketClient c)
+				public CommandHandler(DiscordSocketClient c)
         {
-            client = c;
+						client = c;
 
             service = new CommandService();
             service.AddModulesAsync(Assembly.GetEntryAssembly());
@@ -45,10 +38,12 @@ namespace UsefulDiscordBot
             {
                 var result = await service.ExecuteAsync(context, argPos);
 
-                if (!result.IsSuccess && result.Error != CommandError.UnknownCommand)
+                if (result.Error == CommandError.UnknownCommand)
                 {
+                    Console.WriteLine("Error: " + result.ErrorReason);
                     context.Channel.SendMessageAsync(result.ErrorReason);
                 }
+                await msg.DeleteAsync();
             }
         }
     }

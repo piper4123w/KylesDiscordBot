@@ -1,31 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
-using System.Threading;
 
 using Discord.Commands;
 using Discord;
-
-using System.Net;
 using System.IO;
-
-using Newtonsoft.Json;
-using System.Collections;
 
 namespace UsefulDiscordBot.Modules
 {
-    public class SteamCommands : ModuleBase<SocketCommandContext>
+		public class SteamCommands : ModuleBase<SocketCommandContext>
     {
         string steamFile = "steamIDs.dat";
 
         List<SteamUser> users;
 
         [Command("LinkSteamID")]
+				[Summary("Add's 17digit SteamID number to list of knows discord/steam users")]
         public async Task linkUserSteamAccount([Remainder] string steamid = "")
         {
+						if(steamid.Length < 17)
+						{
+								Console.WriteLine(steamid + " is not a valid steamid input");
+								await Context.Channel.SendMessageAsync(steamid + " is not a valid steamId input. Please enter the 17 digit steam ID located on your profile URL. For more help finding your SteamID see the following link https://steamidfinder.com/lookup/https%3A%2F%2Fsteamcommunity.com%2Fprofiles%2F76561198013452327%2F/");
+						}
             Console.WriteLine("linking steam id");
             string discordId = Context.User.Id.ToString();
             //create the files if it doesnt exist
@@ -36,7 +34,7 @@ namespace UsefulDiscordBot.Modules
             bool exists = false;
             foreach (SteamUser user in users)
             {
-                Console.WriteLine(user.nickname);
+                Console.WriteLine(user.discordUserName);
                 if (user.discordID.Equals(discordId))
                 {
                     Console.WriteLine("Replacing old user data");
@@ -50,12 +48,14 @@ namespace UsefulDiscordBot.Modules
                 Console.WriteLine("Linking new user data");
                 users.Add(new SteamUser(Context.User.Username.ToString(), discordId, steamid));
             }
-            writeSteamFile(users);
+            writeSteamUsersFile(users);
+						await Context.Channel.SendMessageAsync(Context.User.Username + " has been added as a Steam User. ID = " + steamid);
 
-        }
+				}
 
-        [Command("populateSteamFile")]
-        public async Task populateSteamFile()
+        [Command("populateSteamUserFile")]
+				[Summary("Adds user's steam profile to the list of known steam profiles. This is needed to lookup steam info based on Discord ID")]
+				public async Task populateSteamFile()
         {
             Console.WriteLine("populating steam file");
 
@@ -82,8 +82,7 @@ namespace UsefulDiscordBot.Modules
                         users.Add(new SteamUser(discordUsr.Username, discordUsr.Id.ToString(), ""));
                 }
             }
-
-            writeSteamFile(users);
+						writeSteamUsersFile(users);
         }
 
         [Command("compareGamesBetween")]
@@ -91,10 +90,22 @@ namespace UsefulDiscordBot.Modules
         public async Task compareGamesBetween([Remainder] string userNames = "")
         {
             Console.WriteLine("Comparing games between entries");
+
             if (users == null)
                 users = readSteamFile();
 
             string[] userNameAr = userNames.Split(',');
+
+            IReadOnlyCollection<Discord.WebSocket.SocketGuildUser> serverUsers = Context.Guild.Users;
+            foreach (Discord.WebSocket.SocketGuildUser usr in serverUsers)
+            {
+                if (userNameAr.Contains(usr.Nickname, StringComparer.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine(usr.Nickname + " was a nick name, replacing with user name " + usr.Username);
+                    userNameAr[Array.IndexOf(userNameAr, usr.Nickname)] = usr.Username;
+                }
+                    
+            }
 
             List<SteamUser> comparedUsers = new List<SteamUser>();
             foreach (string s in userNameAr)
@@ -103,17 +114,15 @@ namespace UsefulDiscordBot.Modules
                 if (tmp != null)
                 {
                     comparedUsers.Add(tmp);
-                    Console.WriteLine("added " + tmp.nickname);
-                }else
+                    Console.WriteLine("added " + tmp.discordUserName);
+                }
+                else
                 {
-                    Console.WriteLine(s + " not registered to steamID");
+                    await Context.Channel.SendMessageAsync(s + "is either an invalid username, or is not linked with steam.\ntry command \"?llinkSteamID (" + s + "'s Numerical SteamID)\"" + System.Environment.NewLine + "removing " + s + " from comparison");
                 }
             }
 
-
-            foreach (Game g in compareGames(comparedUsers))
-                Console.WriteLine(g.data.name);
-
+            await Context.Channel.SendMessageAsync(sendComparedGames(comparedUsers));
         }
 
         [Command("showCommonGames")]
@@ -125,33 +134,47 @@ namespace UsefulDiscordBot.Modules
                 users = readSteamFile();
 
             List<SteamUser> comparedUsers = new List<SteamUser>();
-            IChannel chan = Context.Channel;
-            
-            foreach (IUser usr in (IEnumerable)Context.Channel.GetUsersAsync())
+            IReadOnlyCollection<Discord.WebSocket.SocketGuildUser> serverUsers = Context.Guild.Users;
+            foreach (Discord.WebSocket.SocketGuildUser usr in serverUsers)
             {
-                SteamUser tmp = getUser(usr.Id.ToString());
-                if (usr.Status == UserStatus.Online && tmp != null && tmp.steamID.Length > 1)
+                if (usr.VoiceChannel == (Context.User as IVoiceState).VoiceChannel && usr.Status == UserStatus.Online)
                 {
-                    Console.WriteLine("adding " + usr.Username + " to comparison List");
-                    comparedUsers.Add(tmp);
-                }else
-                {
-                    Console.WriteLine(usr.Username + " has no valid steamID");
+                    SteamUser tmp = getUser(usr.Username);
+                    Console.WriteLine(tmp.steamID);
+                    if (tmp != null && !String.IsNullOrEmpty(tmp.steamID))
+                    {
+                        Console.WriteLine("adding " + usr.Username + " to comparison List");
+                        comparedUsers.Add(tmp);
+                    }
+                    else
+                    {
+                        await Context.Channel.SendMessageAsync(usr.Username + "is not linked with steam.\ntry command \"?llinkSteamID (" + usr.Username + "'s Numerical SteamID)\"" + System.Environment.NewLine + "removing " + usr.Username + " from comparison");
+                    }
                 }
+                
             }
 
-            if (comparedUsers.Count < 2)
-            {
-                Console.WriteLine("only 1 user is in comparable list, play with self");
-                return;
-            }
-            else
-            {
-                Console.WriteLine("\n --common games--");
-                foreach (Game g in compareGames(comparedUsers))
-                    Console.WriteLine(g.data.name);
-            }
+            await Context.Channel.SendMessageAsync(sendComparedGames(comparedUsers));
 
+        }
+
+        private string sendComparedGames(List<SteamUser> comparedUsers)
+        {
+						if(comparedUsers.Count <= 1)
+						{
+								return "There must be at least 2 users to compare steam libraries";
+						}
+            Console.WriteLine("\n --Sending Common Games--");
+            string message = "";
+            foreach (Game g in compareGames(comparedUsers))
+            {
+                if (!String.IsNullOrEmpty(g.data.name))
+                    message += g.data.name + System.Environment.NewLine;
+                else
+                    Console.WriteLine(g.appid + " has no name");
+            }
+            Console.WriteLine("Done");
+            return "Common Games are..." + System.Environment.NewLine + "```" + message + "```";
         }
 
         public List<Game> compareGames(SteamUser usr1, SteamUser usr2)
@@ -189,6 +212,7 @@ namespace UsefulDiscordBot.Modules
                 {
                     g.populateGameInfo();
                     commonGames.Add(g);
+                    Console.WriteLine("Match: " + g.data.name);
                 }
             }
 
@@ -207,17 +231,44 @@ namespace UsefulDiscordBot.Modules
                 userName = Context.User.Username;
 
             SteamUser user = getUser(userName);
+
             user.populateOwnedGameList();
 
             Console.WriteLine("finished getting all " + user.games.Count + " games");
-
+            string message = "";
+            foreach (Game g in user.games)
+            {
+                g.populateGameInfo();
+                message += g.data.name + System.Environment.NewLine;
+            }
             /*
             System.Net.WebRequest request = System.Net.WebRequest.Create();
             System.Net.WebResponse response = request.GetResponse();
             Console.WriteLine(response.ToString());*/
         }
 
-        private void writeSteamFile(List<SteamUser> users)
+        [Command("GetSteamValue")]
+        public async Task getSteamLibraryValue()
+        {
+            Console.WriteLine("getting owned games");
+            if (users == null)
+                users = readSteamFile();
+
+            SteamUser user = getUser(Context.Message.Author.Id.ToString());
+
+            user.populateOwnedGameList();
+
+            float totalCost = 0f;
+            foreach(Game g in user.games)
+            {
+                g.populateGameInfo();
+                //if(!g.data.is_free)
+                  //  totalCost += (g.data.price_overview.currancy * .01)
+                //totalCost += g.data
+            }
+        }
+
+        private void writeSteamUsersFile(List<SteamUser> users)
         {
             StreamWriter sw = new StreamWriter(steamFile);
             foreach (SteamUser usr in users)
@@ -256,11 +307,12 @@ namespace UsefulDiscordBot.Modules
 
         private SteamUser getUser(string strn)
         {
+            Console.WriteLine(strn);
             foreach (SteamUser u in users)
             {
                 if (u.discordID.Equals(strn))
                     return u;
-                if (u.nickname.Equals(strn))
+                if(String.Equals(strn,u.discordUserName, StringComparison.OrdinalIgnoreCase))
                     return u;
             }
             return null;

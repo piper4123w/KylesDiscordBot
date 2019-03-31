@@ -120,12 +120,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="APIObjects\GameRequest.cs" />
+    <Compile Include="Modules\Foo.cs" />
     <Compile Include="Modules\MediaCommands.cs" />
     <Compile Include="Modules\MessageCommands.cs" />
+    <Compile Include="Modules\ScrimmageModule.cs" />
     <Compile Include="Modules\SteamCommands.cs" />
-    <Compile Include="Modules\SteamObjects.cs" />
+    <Compile Include="APIObjects\SteamObjects.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerUsers.cs" />
+    <Compile Include="Team.cs" />
+    <Compile Include="Teams.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

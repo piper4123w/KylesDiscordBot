@@ -28,6 +28,7 @@ namespace UsefulDiscordBot.Modules
                     images--;
                 }
             }
+						Console.WriteLine("Done Getting Uploads");
         }
 
         [Command("showGallery")]

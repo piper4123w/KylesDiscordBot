@@ -17,6 +17,7 @@ namespace UsefulDiscordBot.Modules
         public async Task deleteFrom([Remainder] string user = "")
         {
             //await checkPermissions();
+            Console.WriteLine("Deleting messages from" + user);
             if(user == "")
             {
                 await Context.Channel.SendMessageAsync("`You need to specify the user | !clear \"user\" | Replace \"user\" with anyone`");
@@ -47,7 +48,7 @@ namespace UsefulDiscordBot.Modules
             int Amount = 0;
 
             Console.WriteLine("Deleting all Messages");
-            foreach (var Item in await Context.Channel.GetMessagesAsync(Delete+1).Flatten())
+            foreach (var Item in await Context.Channel.GetMessagesAsync(Delete + 1).Flatten())
             {
 
                 Amount++;

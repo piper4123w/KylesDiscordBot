@@ -1,31 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Timers;
 
 using Discord;
 using Discord.WebSocket;
 
 namespace UsefulDiscordBot
 {
-    class Program
+
+
+		class Program
     {
-        private DiscordSocketClient client;
+				string Token = "NTYwODE2Nzg3MTM5MDY3OTA1.D37lAA.yanU7soYr1AIJuLhwbla3EqDaqY";
+
+				private DiscordSocketClient client;
 
         private CommandHandler handler;
 
-        static void Main(string[] args)
+				static void Main(string[] args)
         {
             new Program().StartAsync().GetAwaiter().GetResult();
+						Console.WriteLine("Online");
         }
 
         public async Task StartAsync()
         {
             client = new DiscordSocketClient();
 
-            await client.LoginAsync(TokenType.Bot, "MzM5OTYwNjg3NzUxMDY5Njk4.DFrkkw.RBqHibnk9sZf9OJoI4EO4cZQihc");
+            await client.LoginAsync(TokenType.Bot, Token);
 
             await client.StartAsync();
 
