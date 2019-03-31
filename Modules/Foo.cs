@@ -1,4 +1,5 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using System.Threading.Tasks;
 
 namespace UsefulDiscordBot.Modules
@@ -34,6 +35,14 @@ namespace UsefulDiscordBot.Modules
 				public async Task printString()
 				{
 						await ReplyAsync(test);
+				}
+
+				[Command("react")]
+				public async Task react()
+				{
+						var msg = await ReplyAsync("testReact");
+						var emoji = new Emoji("❓");
+						await msg.AddReactionAsync(emoji);
 				}
 		}
 }

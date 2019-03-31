@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,15 +37,45 @@ namespace UsefulDiscordBot.Modules
 
 						if (players.Count > 0)
 						{
-								embed.Description = "Setting up scrimmage with the following players...";
+								embed.Description = "Select a reaction emoji to proceed";
 								embed.AddField("Player List", players.toMentionStrings());
-
-								string s = "Setting up scrimmage with the following players...\n";
-								s += players.ToString();
-
-								await Context.Channel.SendMessageAsync("", false, embed.Build());
+								embed.AddField("Options", ":question: Random Teams\n:crown: I am Capitan\n:computer: Random Capitans");
+								var msg = await ReplyAsync("Scrimmage", false, embed.Build());
+								var emojis = new List<Emoji>
+								{
+										new Emoji("❓"),
+										new Emoji("\uD83D\uDC51"),	//crown
+										new Emoji("\uD83D\uDCBB")		//computer
+								};
+								foreach (var emoji in emojis)
+								{
+										await msg.AddReactionAsync(emoji);
+								}
 						}
 				}
+
+				public void HandleScrimReaction(SocketReaction reaction, IUserMessage msg)
+				{
+						switch (reaction.Emote.Name)
+						{
+								case "❓":
+										Console.WriteLine("random");
+										msg.DeleteAsync();
+										break;
+								case "\uD83D\uDC51":
+										Console.WriteLine("capitan");
+										break;
+
+								case "\uD83D\uDCBB":
+										msg.DeleteAsync();
+										Console.WriteLine("randCapt");
+										break;
+								default:
+										break;
+						}
+				}
+
+				
 
 				private EmbedBuilder scrimEmbed()
 				{
@@ -55,31 +86,9 @@ namespace UsefulDiscordBot.Modules
 										Name = Context.User.Username,
 										IconUrl = Context.User.GetAvatarUrl()
 								},
-								Title = "Scrimmage",
+								Title = "Setting up a Scrimmage",
 								Color = new Color(8816262),
 						};
 				}
-
-
-				/*[Command("Random")]
-				public async Task RandomTeamScrimmage()
-				{
-						Console.WriteLine("generating random teams with " + Players.ToString());
-						Teams = new Teams(Players);
-						
-						await Context.Channel.SendMessageAsync(Teams.ToString());
-				}
-
-				[Command("ImCapitan")]
-				public async Task setPlayerCapitan()
-				{
-						
-				}
-
-				[Command("RandomCapitans")]
-				public async Task setRandomCapitans()
-				{
-
-				}*/
 		}
 }
