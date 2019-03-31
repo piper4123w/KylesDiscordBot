@@ -11,3 +11,8 @@
 *.exe
 *.dat
 *.dll
+*.exe
+*.dat
+*.dat
+*.exe
+*.pdb
