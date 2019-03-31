@@ -39,7 +39,25 @@ namespace UsefulDiscordBot
 						string s = "";
 						foreach(var u in this)
 						{
-								s += u.Username + ",";
+								s += u.Username;
+								if(this.IndexOf(u) != this.Count - 1)
+								{
+										s += ',';
+								}
+						}
+						return s;
+				}
+
+				public string toMentionStrings()
+				{
+						string s = "";
+						foreach (var u in this)
+						{
+								s += u.Mention;
+								if (this.IndexOf(u) != this.Count - 1)
+								{
+										s += ',';
+								}
 						}
 						return s;
 				}
