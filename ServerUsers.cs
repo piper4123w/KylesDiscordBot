@@ -17,6 +17,15 @@ namespace UsefulDiscordBot
 				{
 				}
 
+				public ServerUsers(string str, IReadOnlyCollection<SocketGuildUser> users)
+				{
+						var split = str.Split(',');
+						foreach(var s in split)
+						{
+								Add(users.Where(u => s.Contains(u.Id.ToString())).ToList()[0]);
+						}
+				}
+
 				public ServerUsers getUsersInVoiceChannel(SocketCommandContext context)
 				{
 						return getUsersInVoiceChannel((context.User as IVoiceState).VoiceChannel);

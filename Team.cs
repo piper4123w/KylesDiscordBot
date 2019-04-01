@@ -29,5 +29,15 @@ namespace UsefulDiscordBot
 						}
 						return s;
 				}
+
+				public string ToFormatedMentions()
+				{
+						string s = "";
+						foreach(var u in this)
+						{
+								s += u.Mention + "\n";
+						}
+						return s;
+				}
 		}
 }

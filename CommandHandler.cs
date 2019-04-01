@@ -41,7 +41,7 @@ namespace UsefulDiscordBot
                 if (result.Error == CommandError.UnknownCommand)
                 {
                     Console.WriteLine("Error: " + result.ErrorReason);
-                    context.Channel.SendMessageAsync(result.ErrorReason);
+                    await context.Channel.SendMessageAsync(result.ErrorReason);
                 }
                 await msg.DeleteAsync();
             }

@@ -10,6 +10,10 @@ namespace UsefulDiscordBot.Modules
 {
 		public class ScrimmageManager : ModuleBase<SocketCommandContext>
 		{
+				Emoji quesiton = new Emoji("\u2753");
+				Emoji crown = new Emoji("\uD83D\uDC51");
+				Emoji computer = new Emoji("\uD83D\uDCBB");
+
 
 				[Command("Scrim")]
 				[Summary("Setup a new scirmmage within the current voice channel. @Mention users to add them to the scrimmage if they are not in the current voice channel.")]
@@ -43,9 +47,9 @@ namespace UsefulDiscordBot.Modules
 								var msg = await ReplyAsync("Scrimmage", false, embed.Build());
 								var emojis = new List<Emoji>
 								{
-										new Emoji("❓"),
-										new Emoji("\uD83D\uDC51"),	//crown
-										new Emoji("\uD83D\uDCBB")		//computer
+										quesiton,
+										crown,
+										computer
 								};
 								foreach (var emoji in emojis)
 								{
@@ -56,28 +60,46 @@ namespace UsefulDiscordBot.Modules
 
 				public void HandleScrimReaction(SocketReaction reaction, IUserMessage msg)
 				{
+						var chan = msg.Channel as SocketGuildChannel;
+						var users = chan.Guild.Users;
+						var players = new ServerUsers(msg.Embeds.ToList()[0].Fields.Where(f => f.Name == "Player List").First().Value, users);
+
+						Teams teams;
 						switch (reaction.Emote.Name)
 						{
-								case "❓":
+								case "\u2753":
 										Console.WriteLine("random");
 										msg.DeleteAsync();
+										teams = new Teams(players);	//random teams
 										break;
 								case "\uD83D\uDC51":
 										Console.WriteLine("capitan");
+										teams = null;
 										break;
 
 								case "\uD83D\uDCBB":
 										msg.DeleteAsync();
 										Console.WriteLine("randCapt");
+										teams = null;
 										break;
 								default:
+										teams = null;
 										break;
 						}
+
+						Console.WriteLine(teams);
+						((IMessageChannel)(chan)).SendMessageAsync("Scrimmage", false, teamBuilder(teams));
 				}
 
-				
+				EmbedBuilder teamBuilder(Teams teams)
+				{
+						var b = new EmbedBuilder();
+						b.AddInlineField("Team 1", teams.Team1.ToFormatedMentions());
+						b.AddInlineField("Team 2", teams.Team2.ToFormatedMentions());
+						return b;
+				}
 
-				private EmbedBuilder scrimEmbed()
+				EmbedBuilder scrimEmbed()
 				{
 						return new EmbedBuilder
 						{
