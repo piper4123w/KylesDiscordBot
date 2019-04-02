@@ -8,24 +8,28 @@ using System.Threading.Tasks;
 
 namespace UsefulDiscordBot.Modules
 {
+		[Group("Scrim")]
 		public class ScrimmageManager : ModuleBase<SocketCommandContext>
 		{
 				Emoji quesiton = new Emoji("\u2753");
 				Emoji crown = new Emoji("\uD83D\uDC51");
 				Emoji computer = new Emoji("\uD83D\uDCBB");
 
+				ServerUsers _serverMembers => new ServerUsers(Context.Guild.Users.ToList());
+				ServerUsers _voiceUsers => _serverMembers.getUsersInVoiceChannel(Context);
 
-				[Command("Scrim")]
+				[Command]		//no sub commands
+				public async Task SetupScrimmage()
+				{
+
+				}
+
+
+				[Command()]	//no sub commands + @mentions
 				[Summary("Setup a new scirmmage within the current voice channel. @Mention users to add them to the scrimmage if they are not in the current voice channel.")]
 				public async Task SetupScrimmage([Remainder] string mentionedUsers )
 				{
-						var serverMembers = new ServerUsers(Context.Guild.Users.ToList());
-						var players = new ServerUsers();
-
-						if ((Context.User as IVoiceState).VoiceChannel != null)
-						{  //if user is in a voice channel add all the users in that voice channel
-								players = serverMembers.getUsersInVoiceChannel(Context);
-						}
+						var players = _voiceUsers;
 						if (Context.Message.MentionedUsers.Count > 0)
 						{
 								foreach(var u in Context.Message.MentionedUsers)
@@ -55,6 +59,10 @@ namespace UsefulDiscordBot.Modules
 								{
 										await msg.AddReactionAsync(emoji);
 								}
+						}
+						else
+						{
+								await ReplyAsync("Not Enough Players", false, new Embeds.Error.PlayerCount());
 						}
 				}
 

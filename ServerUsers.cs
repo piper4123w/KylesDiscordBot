@@ -1,9 +1,9 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace UsefulDiscordBot
 {
@@ -28,19 +28,18 @@ namespace UsefulDiscordBot
 
 				public ServerUsers getUsersInVoiceChannel(SocketCommandContext context)
 				{
-						return getUsersInVoiceChannel((context.User as IVoiceState).VoiceChannel);
-				}
-
-				public ServerUsers getUsersInVoiceChannel(IVoiceChannel channel)
-				{
-						Console.WriteLine("Getting users in voice channel");
-						var sus = new ServerUsers();
-						foreach(var u in this)
+						ServerUsers users = new ServerUsers();
+						if ((context.User as IVoiceState).VoiceChannel != null)
 						{
-								if (u.VoiceChannel == channel)
-										sus.Add(u);
+								foreach (var u in context.Guild.Users)
+								{
+										if ((u as IVoiceState)?.VoiceChannel?.Id == (context.User as IVoiceState)?.VoiceChannel?.Id)
+										{
+												users.Add(u);
+										}
+								}
 						}
-						return sus;
+						return users;
 				}
 
 				public override string ToString()

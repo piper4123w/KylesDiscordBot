@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Discord.WebSocket;
 using Discord.Commands;
 using System.Reflection;
+using Discord;
 
 namespace UsefulDiscordBot
 {
@@ -21,11 +22,11 @@ namespace UsefulDiscordBot
             service = new CommandService();
             service.AddModulesAsync(Assembly.GetEntryAssembly());
 
-            client.MessageReceived += HandleCommandAsync;
+            client.MessageReceived += OnMessageReceived;
+						client.ReactionAdded += OnReactionAdded;
+				}
 
-        }
-
-        public async Task HandleCommandAsync(SocketMessage s)
+        public async Task OnMessageReceived(SocketMessage s)
         {
             var msg = s as SocketUserMessage;
 
@@ -33,18 +34,36 @@ namespace UsefulDiscordBot
 
             context = new SocketCommandContext(client, msg);
 
-            int argPos = 0;
-            if (msg.HasCharPrefix('?', ref argPos))
-            {
-                var result = await service.ExecuteAsync(context, argPos);
+						if (!context.IsPrivate)  //Sent in group chat
+						{
+								int argPos = 0;
+								if (msg.HasCharPrefix('?', ref argPos))
+								{
+										var result = await service.ExecuteAsync(context, argPos);
 
-                if (result.Error == CommandError.UnknownCommand)
-                {
-                    Console.WriteLine("Error: " + result.ErrorReason);
-                    await context.Channel.SendMessageAsync(result.ErrorReason);
-                }
-                await msg.DeleteAsync();
-            }
+										if (result.Error == CommandError.UnknownCommand)
+										{
+												Console.WriteLine("Error: " + result.ErrorReason);
+												await context.Channel.SendMessageAsync(result.ErrorReason);
+										}
+										await msg.DeleteAsync();
+								}
+						}
         }
-    }
+
+				async Task OnReactionAdded(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
+				{
+						var msg = await cache.DownloadAsync();
+						if (reaction.User.Value.Id != client.CurrentUser.Id && msg.Author.Id == client.CurrentUser.Id)
+						{
+								Console.WriteLine("Reaction recieved");
+								Console.WriteLine(msg.Content + ',' + msg.Timestamp);
+								if (msg.Content.Contains("Scrimmage"))
+								{
+										Modules.ScrimmageManager m = new Modules.ScrimmageManager();
+										m.HandleScrimReaction(reaction, msg);
+								}
+						}
+				}
+		}
 }
