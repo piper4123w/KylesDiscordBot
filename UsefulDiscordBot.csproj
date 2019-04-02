@@ -122,6 +122,7 @@
     <Compile Include="CommandHandler.cs" />
     <Compile Include="APIObjects\GameRequest.cs" />
     <Compile Include="Modules\Embeds\Error\PlayerCount.cs" />
+    <Compile Include="Modules\Embeds\ScrimEmbed.cs" />
     <Compile Include="Modules\Foo.cs" />
     <Compile Include="Modules\MediaCommands.cs" />
     <Compile Include="Modules\MessageCommands.cs" />

@@ -26,7 +26,7 @@ namespace UsefulDiscordBot
 						client.ReactionAdded += OnReactionAdded;
 				}
 
-        public async Task OnMessageReceived(SocketMessage s)
+        async Task OnMessageReceived(SocketMessage s)
         {
             var msg = s as SocketUserMessage;
 
@@ -61,7 +61,7 @@ namespace UsefulDiscordBot
 								if (msg.Content.Contains("Scrimmage"))
 								{
 										Modules.ScrimmageManager m = new Modules.ScrimmageManager();
-										m.HandleScrimReaction(reaction, msg);
+										await m.HandleScrimReaction(reaction, msg);
 								}
 						}
 				}

@@ -3,8 +3,36 @@ using System.Collections.Generic;
 
 namespace UsefulDiscordBot
 {
-		public class Team : List<SocketGuildUser>
+		public class Team : ServerUsers
 		{
+				public Team() : base()
+				{
+				}
+
+				public Team(ServerUsers users)
+				{
+						foreach(var u in users)
+						{
+								Add(u);
+						}
+				}
+
+				public Team(string str, IReadOnlyCollection<SocketGuildUser> users)
+				{
+						foreach(var u in users)
+						{
+								if (str.Contains(u.Mention))
+								{
+										Add(u);
+								}
+						}
+				}
+
+				public Team(SocketGuildUser u)
+				{
+						Clear();
+						Add(u);
+				}
 
 				public void makeCapitan(SocketGuildUser captain)
 				{
@@ -13,6 +41,11 @@ namespace UsefulDiscordBot
 								this.Clear();
 						}
 						this.Add(captain);
+				}
+
+				public bool isEmpty()
+				{
+						return Count > 0;
 				}
 
 				public override string ToString()
@@ -30,7 +63,7 @@ namespace UsefulDiscordBot
 						return s;
 				}
 
-				public string ToFormatedMentions()
+				public string toFormattedMentionString()
 				{
 						string s = "";
 						foreach(var u in this)

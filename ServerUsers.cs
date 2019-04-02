@@ -13,16 +13,23 @@ namespace UsefulDiscordBot
 				{
 				}
 
+				public ServerUsers(int i) : base(i)
+				{
+				}
+
 				public ServerUsers(List<SocketGuildUser> list) : base(list)
 				{
 				}
 
 				public ServerUsers(string str, IReadOnlyCollection<SocketGuildUser> users)
 				{
-						var split = str.Split(',');
-						foreach(var s in split)
+						foreach (var u in users)
 						{
-								Add(users.Where(u => s.Contains(u.Id.ToString())).ToList()[0]);
+								if (str.Contains(u.Id.ToString()))
+								{
+										Add(u);
+								}
+
 						}
 				}
 
@@ -40,6 +47,14 @@ namespace UsefulDiscordBot
 								}
 						}
 						return users;
+				}
+
+				public void RemoveUsers(ServerUsers toRemove)
+				{
+						foreach(var u in toRemove)
+						{
+								Remove(u);
+						}
 				}
 
 				public override string ToString()
@@ -62,12 +77,22 @@ namespace UsefulDiscordBot
 						foreach (var u in this)
 						{
 								s += u.Mention;
-								if (this.IndexOf(u) != this.Count - 1)
+								if (IndexOf(u) != Count - 1)
 								{
 										s += ',';
 								}
 						}
 						return s;
+				}
+
+				public List<string> toMentionList()
+				{
+						var list = new List<string>();
+						foreach(var u in this)
+						{
+								list.Add(u.Mention);
+						}
+						return list;
 				}
 		}
 }

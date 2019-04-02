@@ -4,20 +4,24 @@ using System.Collections.Generic;
 
 namespace UsefulDiscordBot
 {
-		public class Teams : Tuple<Team, Team>
+		public class Teams
 		{
-				public Team Team1 => this.Item1;
-				public Team Team2 => this.Item2;
+				public Team Team1;
+				public Team Team2;
 
 				public SocketGuildUser Capitan1 => Team1[0];
 				public SocketGuildUser Capitan2 => Team2[0];
 
-				public Teams() : base(new Team(), new Team())
+				public Teams()
 				{
+						Team1 = new Team();
+						Team2 = new Team();
 				}
 
-				public Teams(Team t1, Team t2) : base(t1, t2)
+				public Teams(Team t1, Team t2)
 				{
+						Team1 = t1;
+						Team2 = t2;
 				}
 
 				public Teams(ServerUsers players) : this()
@@ -43,6 +47,10 @@ namespace UsefulDiscordBot
 				{
 						Team1.Add(u1);
 						Team2.Add(u2);
+				}
+				public bool AreBothPopulated()
+				{
+						return !Team1.isEmpty() && !Team2.isEmpty();
 				}
 
 				public override string ToString()
