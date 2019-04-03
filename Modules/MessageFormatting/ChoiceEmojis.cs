@@ -1,5 +1,6 @@
 ﻿using Discord;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UsefulDiscordBot.Modules.MessageFormatting
 {
@@ -36,5 +37,10 @@ namespace UsefulDiscordBot.Modules.MessageFormatting
 				{
 						A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z
 				};
+
+				public List<Emoji> GetNumberOfChoices(int i)
+				{
+						return new ChoiceEmojis().All.Take(i).ToList();
+				}
 		}
 }

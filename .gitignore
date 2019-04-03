@@ -16,3 +16,9 @@
 *.dat
 *.exe
 *.pdb
+*.xml
+*.config
+*.CopyComplete
+*.cs
+*.txt
+*.cache

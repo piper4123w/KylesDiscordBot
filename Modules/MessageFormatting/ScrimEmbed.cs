@@ -1,6 +1,5 @@
 ﻿using Discord;
 using Discord.Commands;
-using System.Linq;
 using System.Collections.Generic;
 using UsefulDiscordBot.Modules.MessageFormatting;
 
@@ -47,15 +46,11 @@ namespace UsefulDiscordBot.Modules.Embeds
 								int i = 0;
 								foreach (var item in list)
 								{
-										output += choiceEmojis.All[i++] + ":" + item + "\n";
+										output += choiceEmojis.All[i++] + " " + item + "\n";
 								}
 								AddField(listTitle, output);
 						}
 				}
 
-				public List<Emoji> GenerateChoiceReactionList(int i)
-				{
-						return new ChoiceEmojis().All.Take(i).ToList();
-				}
 		}
 }

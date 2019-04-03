@@ -11,33 +11,41 @@ using Discord;
 
 namespace UsefulDiscordBot.Modules
 {
+		[RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+		[RequireOwner(Group = "Permission")]
+		[Group("clear")]
     public class MessageCommands : ModuleBase<SocketCommandContext>
     {
-        [Command("deleteMessagesFrom")]
+				bool isAdmin => (Context.User as IGuildUser).Guild.Roles.FirstOrDefault(x => x.Name == "Mods") != null;
+
+				[Command("from")]
         public async Task deleteFrom([Remainder] string user = "")
         {
-            //await checkPermissions();
-            Console.WriteLine("Deleting messages from" + user);
-            if(user == "")
-            {
-                await Context.Channel.SendMessageAsync("`You need to specify the user | !clear \"user\" | Replace \"user\" with anyone`");
-            }
+						if (isAdmin)
+						{
+								//await checkPermissions();
+								Console.WriteLine("Deleting messages from" + user);
+								if (user == "")
+								{
+										await Context.Channel.SendMessageAsync("`You need to specify the user | !clear \"user\" | Replace \"user\" with anyone`");
+								}
 
-            int Amount = 0;
-            foreach (var Item in await Context.Channel.GetMessagesAsync(1000).Flatten())
-            {
-                if (Item.Author.Username == user)
-                {
-                    Amount++;
-                    await Item.DeleteAsync();
-                }
+								int Amount = 0;
+								foreach (var Item in await Context.Channel.GetMessagesAsync(1000).Flatten())
+								{
+										if (Item.Author.Username == user)
+										{
+												Amount++;
+												await Item.DeleteAsync();
+										}
 
-            }
-            await Context.Channel.SendMessageAsync($"`{Context.User.Username} deleted {Amount} messages`");
-
+								}
+								await ReplyAsync($"`{Context.User.Username} deleted {Amount} messages`");
+						}
+						await ReplyAsync("You must be a moderator to delete messages");
         }
 
-        [Command("clear")]
+        [Command()]
         public async Task clear([Remainder] int Delete = 0)
         {
             //await checkPermissions();
@@ -58,7 +66,7 @@ namespace UsefulDiscordBot.Modules
             await Context.Channel.SendMessageAsync($"`{Context.User.Username} deleted {Amount} messages`");
         }
 
-        [Command("deleteMessagesContaining")]
+        [Command("containing")]
         public async Task delete([Remainder] string key = "")
         {
             //await checkPermissions();

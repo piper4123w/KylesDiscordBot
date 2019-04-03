@@ -121,7 +121,9 @@
   <ItemGroup>
     <Compile Include="CommandHandler.cs" />
     <Compile Include="APIObjects\GameRequest.cs" />
+    <Compile Include="Modules\DecisionModule.cs" />
     <Compile Include="Modules\MessageFormatting\ChoiceEmojis.cs" />
+    <Compile Include="Modules\MessageFormatting\DecisionEmbed.cs" />
     <Compile Include="Modules\MessageFormatting\Error\PlayerCount.cs" />
     <Compile Include="Modules\MessageFormatting\ScrimEmbed.cs" />
     <Compile Include="Modules\Foo.cs" />

@@ -19,11 +19,14 @@ namespace UsefulDiscordBot
 
 				public Team(string str, IReadOnlyCollection<SocketGuildUser> users)
 				{
-						foreach(var u in users)
+						foreach(var s in str.Split('\n'))
 						{
-								if (str.Contains(u.Mention))
+								foreach(var u in users)
 								{
-										Add(u);
+										if (s.Contains(u.Mention))
+										{
+												Add(u);
+										}
 								}
 						}
 				}

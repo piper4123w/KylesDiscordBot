@@ -69,7 +69,23 @@ namespace UsefulDiscordBot.Modules
 										}
 								}
 						}
+						if (mentionedUsers.Contains("@everyone"))
+						{
+								foreach(var u in Context.Guild.Users)
+								{
+										players.Add(u);
+								}
+						}
 						await SetupScrimmage();
+				}
+
+				[Command()]
+				[Summary("Make a choice between options seperated by comma")]
+				public async Task MakeDecision([Remainder] string optionString)
+				{
+						embed.EmbedChoiceList("Decision Time", optionString.Split().ToList());
+						var message = await ReplyAsync("", false, embed);
+						var choiceEmojis = new ChoiceEmojis().GetNumberOfChoices(optionString.Split().ToList().Count);
 				}
 
 				public async Task HandleScrimReaction(SocketReaction reaction, IUserMessage message)
@@ -115,20 +131,31 @@ namespace UsefulDiscordBot.Modules
 						}
 						else if (new ChoiceEmojis().All.Contains(reaction.Emote))
 						{   //choice made
-								Console.WriteLine("choice made");
-								var chosenPlayer = players[new ChoiceEmojis().All.IndexOf(new Emoji(reaction.Emote.ToString()))];
-								players.Remove(chosenPlayer);
-								teams.AddToCapitansTeam(reaction.User.Value.Mention, chosenPlayer);
+								if (reaction.User.Value.Mention == teams.Capitan1.Mention || reaction.User.Value.Mention == teams.Capitan2.Mention)
+								{
+										await message.DeleteAsync();
+										Console.WriteLine("choice made");
+										var chosenPlayer = players[new ChoiceEmojis().All.IndexOf(new Emoji(reaction.Emote.ToString()))];
+										players.Remove(chosenPlayer);
+										teams.AddToCapitansTeam(reaction.User.Value.Mention, chosenPlayer);
+								}
+								else
+								{
+										teams = null;
+								}
 						}
 						Console.WriteLine(teams);
-						embed = new ScrimEmbed(reaction.User.Value, "Scrimmage");
-						embed.EmbedTeams(teams);
-						embed.EmbedChoiceList("Remaining Player List", players.toMentionList());
-						var choiceEmojis = embed.GenerateChoiceReactionList(players.Count);
-						var newMessage = await ((IMessageChannel)(chan)).SendMessageAsync("Scrimmage", false, embed);
-						foreach(var choice in choiceEmojis)
+						if (teams != null)
 						{
-								await newMessage.AddReactionAsync(choice);
+								embed = new ScrimEmbed(reaction.User.Value, "Scrimmage");
+								embed.EmbedTeams(teams);
+								embed.EmbedChoiceList("Remaining Player List", players.toMentionList());
+								var choiceEmojis = new ChoiceEmojis().GetNumberOfChoices(players.Count);
+								var newMessage = await ((IMessageChannel)(chan)).SendMessageAsync("Scrimmage", false, embed);
+								foreach (var choice in choiceEmojis)
+								{
+										await newMessage.AddReactionAsync(choice);
+								}
 						}
 				}
 
@@ -143,16 +170,10 @@ namespace UsefulDiscordBot.Modules
 								{
 										if (f.Name.Contains("Team 1"))
 										{
-												foreach(var m in new ServerUsers(f.Value, guildUsers))
-												{
-														teams.Team1.Add(m);
-												}
+												teams.Team1 = new Team(f.Value, guildUsers);
 										}else if(f.Name.Contains("Team 2"))
 										{
-												foreach (var m in new ServerUsers(f.Value, guildUsers))
-												{
-														teams.Team2.Add(m);
-												}
+												teams.Team2 = new Team(f.Value, guildUsers);
 										}
 										if (teams.AreBothPopulated())
 												return teams;
