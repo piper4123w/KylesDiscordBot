@@ -1,9 +1,8 @@
 ﻿using Discord;
 using Discord.Commands;
 using System.Collections.Generic;
-using UsefulDiscordBot.Modules.MessageFormatting;
 
-namespace UsefulDiscordBot.Modules.Embeds
+namespace UsefulDiscordBot.Modules.MessageFormatting
 {
 		public class ScrimEmbed : EmbedBuilder
 		{
@@ -42,11 +41,10 @@ namespace UsefulDiscordBot.Modules.Embeds
 						if (list?.Count > 0)
 						{
 								string output = "";
-								var choiceEmojis = new ChoiceEmojis();
 								int i = 0;
 								foreach (var item in list)
 								{
-										output += choiceEmojis.All[i++] + " " + item + "\n";
+										output += ChoiceEmojis.All[i++] + " " + item + "\n";
 								}
 								AddField(listTitle, output);
 						}

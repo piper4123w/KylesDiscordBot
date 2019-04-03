@@ -60,8 +60,13 @@ namespace UsefulDiscordBot
 								Console.WriteLine(msg.Content + ',' + msg.Timestamp);
 								if (msg.Content.Contains("Scrimmage"))
 								{
-										Modules.ScrimmageManager m = new Modules.ScrimmageManager();
-										await m.HandleScrimReaction(reaction, msg);
+										Modules.Scrimmage.ScrimmageReactions m = new Modules.Scrimmage.ScrimmageReactions();
+										await m.HandleReaction(reaction, msg);
+								}
+								if (msg.Content.Contains("Decision"))
+								{
+										Modules.Decision.DecisionReactions m = new Modules.Decision.DecisionReactions();
+										await m.HandleReaction(reaction, msg);
 								}
 						}
 				}

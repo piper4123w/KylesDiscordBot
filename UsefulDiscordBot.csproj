@@ -121,7 +121,10 @@
   <ItemGroup>
     <Compile Include="CommandHandler.cs" />
     <Compile Include="APIObjects\GameRequest.cs" />
-    <Compile Include="Modules\DecisionModule.cs" />
+    <Compile Include="CustomAttributes.cs" />
+    <Compile Include="Modules\Decision\DecisionCommands.cs" />
+    <Compile Include="Modules\Decision\DecisionMessageParser.cs" />
+    <Compile Include="Modules\Decision\DecisionReactions.cs" />
     <Compile Include="Modules\MessageFormatting\ChoiceEmojis.cs" />
     <Compile Include="Modules\MessageFormatting\DecisionEmbed.cs" />
     <Compile Include="Modules\MessageFormatting\Error\PlayerCount.cs" />
@@ -129,7 +132,10 @@
     <Compile Include="Modules\Foo.cs" />
     <Compile Include="Modules\MediaCommands.cs" />
     <Compile Include="Modules\MessageCommands.cs" />
-    <Compile Include="Modules\ScrimmageModule.cs" />
+    <Compile Include="Modules\Reaction.cs" />
+    <Compile Include="Modules\Scrimmage\ScrimmageCommands.cs" />
+    <Compile Include="Modules\Scrimmage\ScrimmageReactions.cs" />
+    <Compile Include="Modules\Scrimmage\ScrimmageMessageParser.cs" />
     <Compile Include="Modules\SteamCommands.cs" />
     <Compile Include="APIObjects\SteamObjects.cs" />
     <Compile Include="Program.cs" />
