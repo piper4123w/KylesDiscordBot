@@ -48,6 +48,30 @@ namespace UsefulDiscordBot
 						Team1.Add(u1);
 						Team2.Add(u2);
 				}
+
+				public void AddToCapitansTeam(string capitanMention, SocketGuildUser member)
+				{
+						if (Capitan1.Mention.Equals(capitanMention))
+						{
+								Team1.Add(member);
+						}
+						else if (Capitan2.Mention.Equals(capitanMention))
+						{
+								Team2.Add(member);
+						}
+				}
+
+				public void AddToCapitansTeam(SocketGuildUser capitan, SocketGuildUser member)
+				{
+						if (capitan.Equals(Capitan1))
+						{
+								Team1.Add(member);
+						}else if (capitan.Equals(Capitan2))
+						{
+								Team2.Add(member);
+						}
+				}
+
 				public bool AreBothPopulated()
 				{
 						return !Team1.isEmpty() && !Team2.isEmpty();

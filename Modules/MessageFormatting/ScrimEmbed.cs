@@ -1,7 +1,8 @@
 ﻿using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
+using System.Linq;
 using System.Collections.Generic;
+using UsefulDiscordBot.Modules.MessageFormatting;
 
 namespace UsefulDiscordBot.Modules.Embeds
 {
@@ -37,18 +38,24 @@ namespace UsefulDiscordBot.Modules.Embeds
 								AddField(listTitle, users.toMentionStrings());
 				}
 
-				public void EmbedPlayerChoiceList(string listTitle, ServerUsers users)
+				public void EmbedChoiceList<T>(string listTitle, List<T> list)
 				{
-						if (users.Count > 0)
+						if (list?.Count > 0)
 						{
 								string output = "";
-								char c = 'a';
-								foreach (var m in users.toMentionList())
+								var choiceEmojis = new ChoiceEmojis();
+								int i = 0;
+								foreach (var item in list)
 								{
-										output += ":regional_indicator_" + c++ + ": " + m + "\n";
+										output += choiceEmojis.All[i++] + ":" + item + "\n";
 								}
 								AddField(listTitle, output);
 						}
+				}
+
+				public List<Emoji> GenerateChoiceReactionList(int i)
+				{
+						return new ChoiceEmojis().All.Take(i).ToList();
 				}
 		}
 }

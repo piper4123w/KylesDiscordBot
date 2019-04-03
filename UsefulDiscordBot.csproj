@@ -121,8 +121,9 @@
   <ItemGroup>
     <Compile Include="CommandHandler.cs" />
     <Compile Include="APIObjects\GameRequest.cs" />
-    <Compile Include="Modules\Embeds\Error\PlayerCount.cs" />
-    <Compile Include="Modules\Embeds\ScrimEmbed.cs" />
+    <Compile Include="Modules\MessageFormatting\ChoiceEmojis.cs" />
+    <Compile Include="Modules\MessageFormatting\Error\PlayerCount.cs" />
+    <Compile Include="Modules\MessageFormatting\ScrimEmbed.cs" />
     <Compile Include="Modules\Foo.cs" />
     <Compile Include="Modules\MediaCommands.cs" />
     <Compile Include="Modules\MessageCommands.cs" />
@@ -131,9 +132,9 @@
     <Compile Include="APIObjects\SteamObjects.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServerUsers.cs" />
-    <Compile Include="Team.cs" />
-    <Compile Include="Teams.cs" />
+    <Compile Include="Modules\DataScructures\ServerUsers.cs" />
+    <Compile Include="Modules\DataScructures\Scrim\Team.cs" />
+    <Compile Include="Modules\DataScructures\Scrim\Teams.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

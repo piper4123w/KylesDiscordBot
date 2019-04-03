@@ -45,7 +45,7 @@ namespace UsefulDiscordBot
 
 				public bool isEmpty()
 				{
-						return Count > 0;
+						return Count == 0;
 				}
 
 				public override string ToString()

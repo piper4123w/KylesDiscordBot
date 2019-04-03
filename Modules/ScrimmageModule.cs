@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UsefulDiscordBot.Modules.Embeds;
+using UsefulDiscordBot.Modules.MessageFormatting;
 
 namespace UsefulDiscordBot.Modules
 {
@@ -79,48 +80,56 @@ namespace UsefulDiscordBot.Modules
 						var captianUsers = await getReactionUsers(crown, message);
 						
 						Teams teams = parseTeams(message);
-						switch (reaction.Emote.Name)
-						{
-								case "\u2753":
-										Console.WriteLine("random");
+						if(reaction.Emote.Equals(quesiton))
+						{ //random teams
+								Console.WriteLine("random");
+								await message.DeleteAsync();
+								teams = new Teams(players); 
+						}
+						else if(reaction.Emote.Equals(crown))
+						{ //nominate as capitan
+								Console.WriteLine("capitan");
+								if (captianUsers.Count >= 2)
+								{
 										await message.DeleteAsync();
-										teams = new Teams(players);	//random teams
-										break;
-								case "\uD83D\uDC51":
-										Console.WriteLine("capitan");
-										if (captianUsers.Count >= 2)
-										{
-												await message.DeleteAsync();
-												players.RemoveUsers(captianUsers);
-												teams = new Teams(new Team(captianUsers[0]), new Team(captianUsers[1]));
-										}
-										else
-										{
-												teams = null;
-										}
-										break;
-
-								case "\uD83D\uDCBB":
-										Console.WriteLine("randCapt");
-										await message.DeleteAsync();
-										captianUsers = new ServerUsers();
-										for(int i = 2; i > 0; i--)
-										{
-												int r = new Random().Next(players.Count - 1);
-												captianUsers.Add(players[r]);
-												players.RemoveAt(r);
-										}
+										players.RemoveUsers(captianUsers);
 										teams = new Teams(new Team(captianUsers[0]), new Team(captianUsers[1]));
-										break;
-								default:
+								}
+								else
+								{
 										teams = null;
-										break;
+								}
+						}
+						else if(reaction.Emote.Equals(computer))
+						{		//random capitans
+								Console.WriteLine("randCapt");
+								await message.DeleteAsync();
+								captianUsers = new ServerUsers();
+								for (int i = 2; i > 0; i--)
+								{
+										int r = new Random().Next(players.Count - 1);
+										captianUsers.Add(players[r]);
+										players.RemoveAt(r);
+								}
+								teams = new Teams(new Team(captianUsers[0]), new Team(captianUsers[1]));
+						}
+						else if (new ChoiceEmojis().All.Contains(reaction.Emote))
+						{   //choice made
+								Console.WriteLine("choice made");
+								var chosenPlayer = players[new ChoiceEmojis().All.IndexOf(new Emoji(reaction.Emote.ToString()))];
+								players.Remove(chosenPlayer);
+								teams.AddToCapitansTeam(reaction.User.Value.Mention, chosenPlayer);
 						}
 						Console.WriteLine(teams);
 						embed = new ScrimEmbed(reaction.User.Value, "Scrimmage");
-						embed.EmbedPlayerChoiceList("Remaining Players", players);
 						embed.EmbedTeams(teams);
-						await ((IMessageChannel)(chan)).SendMessageAsync("Scrimmage", false, embed);
+						embed.EmbedChoiceList("Remaining Player List", players.toMentionList());
+						var choiceEmojis = embed.GenerateChoiceReactionList(players.Count);
+						var newMessage = await ((IMessageChannel)(chan)).SendMessageAsync("Scrimmage", false, embed);
+						foreach(var choice in choiceEmojis)
+						{
+								await newMessage.AddReactionAsync(choice);
+						}
 				}
 
 				Teams parseTeams(IUserMessage message)
@@ -134,10 +143,16 @@ namespace UsefulDiscordBot.Modules
 								{
 										if (f.Name.Contains("Team 1"))
 										{
-												teams.Team1 = new Team(f.Value, guildUsers);
+												foreach(var m in new ServerUsers(f.Value, guildUsers))
+												{
+														teams.Team1.Add(m);
+												}
 										}else if(f.Name.Contains("Team 2"))
 										{
-												teams.Team2 = new Team(f.Value, guildUsers);
+												foreach (var m in new ServerUsers(f.Value, guildUsers))
+												{
+														teams.Team2.Add(m);
+												}
 										}
 										if (teams.AreBothPopulated())
 												return teams;
