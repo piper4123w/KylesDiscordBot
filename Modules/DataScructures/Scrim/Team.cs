@@ -1,5 +1,6 @@
 ﻿using Discord.WebSocket;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UsefulDiscordBot
 {
@@ -57,7 +58,7 @@ namespace UsefulDiscordBot
 						foreach(var u in this)
 						{
 								s += u.Username;
-								if (this.IndexOf(u) != this.Count - 1)
+								if (u != this.Last())
 								{
 										s += ',';
 								}

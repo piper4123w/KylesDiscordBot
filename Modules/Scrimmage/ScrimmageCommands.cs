@@ -15,7 +15,7 @@ namespace UsefulDiscordBot.Modules.Scrimmage
 				ServerUsers players;
 				ScrimEmbed embed;
 
-				[Command]		//no sub commands
+				[Command]   //no sub commands
 				public async Task SetupScrimmage()
 				{
 						players = players ?? _voiceUsers;

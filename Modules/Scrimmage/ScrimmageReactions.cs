@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UsefulDiscordBot.Debug;
 using UsefulDiscordBot.Modules.MessageFormatting;
 
 namespace UsefulDiscordBot.Modules.Scrimmage
@@ -100,10 +101,12 @@ namespace UsefulDiscordBot.Modules.Scrimmage
 						embed.EmbedChoiceList("Remaining Player List", players.toMentionList());
 						var choiceEmojis = new ChoiceEmojis().GetNumberOfChoices(players.Count);
 						var newMessage = await ((IMessageChannel)(channel)).SendMessageAsync("Scrimmage", false, embed);
+						DebugTimer timer = new DebugTimer();
 						foreach (var choice in choiceEmojis)
 						{
 								await newMessage.AddReactionAsync(choice);
 						}
+						timer.StopTimer();
 				}
 		}
 }

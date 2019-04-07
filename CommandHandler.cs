@@ -56,7 +56,7 @@ namespace UsefulDiscordBot
 						var msg = await cache.DownloadAsync();
 						if (reaction.User.Value.Id != client.CurrentUser.Id && msg.Author.Id == client.CurrentUser.Id)
 						{
-								Console.WriteLine("Reaction recieved");
+								Console.WriteLine("Reaction recieved " + msg.Content);
 								Console.WriteLine(msg.Content + ',' + msg.Timestamp);
 								if (msg.Content.Contains("Scrimmage"))
 								{

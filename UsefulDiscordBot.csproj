@@ -122,6 +122,7 @@
     <Compile Include="CommandHandler.cs" />
     <Compile Include="APIObjects\GameRequest.cs" />
     <Compile Include="CustomAttributes.cs" />
+    <Compile Include="Debug\DebugTimer.cs" />
     <Compile Include="Modules\Decision\DecisionCommands.cs" />
     <Compile Include="Modules\Decision\DecisionMessageParser.cs" />
     <Compile Include="Modules\Decision\DecisionReactions.cs" />
@@ -136,7 +137,7 @@
     <Compile Include="Modules\Scrimmage\ScrimmageCommands.cs" />
     <Compile Include="Modules\Scrimmage\ScrimmageReactions.cs" />
     <Compile Include="Modules\Scrimmage\ScrimmageMessageParser.cs" />
-    <Compile Include="Modules\SteamCommands.cs" />
+    <Compile Include="Modules\Steam\SteamCommands.cs" />
     <Compile Include="APIObjects\SteamObjects.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

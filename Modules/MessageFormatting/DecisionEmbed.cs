@@ -1,12 +1,13 @@
 ﻿using Discord;
 using Discord.Commands;
+using System;
 using System.Collections.Generic;
 
 namespace UsefulDiscordBot.Modules.MessageFormatting
 {
 		public class DecisionEmbed : EmbedBuilder
 		{
-				Color color => new Color(8816262);
+				static Color color => new Color(8816262);
 
 				public DecisionEmbed(IUser user, string title)
 				{
@@ -35,6 +36,15 @@ namespace UsefulDiscordBot.Modules.MessageFormatting
 								}
 								AddField(listTitle, output);
 						}
+				}
+
+				internal static EmbedBuilder ChoiceMade(string decision)
+				{
+						var toReturn = new EmbedBuilder();
+						toReturn.Title = "Decision made";
+						toReturn.Color = color;
+						toReturn.Description = decision;
+						return toReturn;
 				}
 		}
 }

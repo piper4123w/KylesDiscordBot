@@ -25,7 +25,7 @@ namespace UsefulDiscordBot.Modules
 						{
 								//await checkPermissions();
 								Console.WriteLine("Deleting messages from" + user);
-								if (user == "")
+								if (user == string.Empty)
 								{
 										await Context.Channel.SendMessageAsync("`You need to specify the user | !clear \"user\" | Replace \"user\" with anyone`");
 								}
@@ -70,7 +70,7 @@ namespace UsefulDiscordBot.Modules
         public async Task delete([Remainder] string key = "")
         {
             //await checkPermissions();
-            if (key == "")
+            if (key == string.Empty)
             {
                 await Context.Channel.SendMessageAsync("`You need to specify the key | !clear \"key\" | Replace \"key\" with any string");
             }

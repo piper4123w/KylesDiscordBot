@@ -59,7 +59,7 @@ namespace UsefulDiscordBot
 
 				public override string ToString()
 				{
-						string s = "";
+						string s = string.Empty;
 						foreach(var u in this)
 						{
 								s += u.Username;
@@ -73,11 +73,11 @@ namespace UsefulDiscordBot
 
 				public string toMentionStrings()
 				{
-						string s = "";
+						string s = string.Empty;
 						foreach (var u in this)
 						{
 								s += u.Mention;
-								if (IndexOf(u) != Count - 1)
+								if (u != this.Last())
 								{
 										s += ',';
 								}
