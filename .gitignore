@@ -15,3 +15,5 @@
 *.CopyComplete
 /obj/Debug
 /obj/Release
+*.p7s
+*.nupkg
