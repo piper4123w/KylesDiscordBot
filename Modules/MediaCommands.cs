@@ -1,17 +1,13 @@
-﻿using System;
+﻿using Discord;
+using Discord.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
-using System.Threading;
-
-using Discord.Commands;
-using Discord;
 
 namespace UsefulDiscordBot.Modules
 {
-    public class MediaCommands : ModuleBase<SocketCommandContext>
+		public class MediaCommands : ModuleBase<SocketCommandContext>
     {
         [Command("showUploads")]
         public async Task sendUploads([Remainder] int images = 0)

@@ -17,3 +17,6 @@
 /obj/Release
 *.p7s
 *.nupkg
+*.cache
+*.nupkg
+*.xml
