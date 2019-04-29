@@ -18,6 +18,10 @@ namespace UsefulDiscordBot.Modules.Decision
 				[Command]
 				public async Task SetUpDecision([Remainder] string optionsString) => await SetUpDecision(optionsString, Context.Message);
 
+				[Command("CSMap")]
+				[Priority(1)]
+				public async Task CSMapDecision() => await SetUpDecision("Cache Mirage Overpass Inferno Train Nuke Dust2 Vertigo", Context.Message);
+
 				public async Task SetUpDecision(string optionsString, IUserMessage message)
 				{
 						embed = new DecisionEmbed(message.Author, ContentTag);

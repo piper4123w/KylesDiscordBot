@@ -18,6 +18,7 @@ namespace UsefulDiscordBot.Modules.Decision
 								var options = DecisionMessageParser.GetOptions(message);
 								var choice = new ChoiceEmojis().IndexOf(reaction.Emote);
 								options.RemoveAt(choice);
+								await message.DeleteAsync();
 								if (options.Count > 1)
 								{
 										await new DecisionCommands().SetUpDecision(DecisionMessageParser.PrintFormattedOptions(options), message);

@@ -107,11 +107,11 @@
     <Compile Include="Modules\Decision\DecisionCommands.cs" />
     <Compile Include="Modules\Decision\DecisionMessageParser.cs" />
     <Compile Include="Modules\Decision\DecisionReactions.cs" />
+    <Compile Include="Modules\HelpCommand.cs" />
     <Compile Include="Modules\MessageFormatting\ChoiceEmojis.cs" />
     <Compile Include="Modules\MessageFormatting\DecisionEmbed.cs" />
     <Compile Include="Modules\MessageFormatting\Error\PlayerCount.cs" />
     <Compile Include="Modules\MessageFormatting\ScrimEmbed.cs" />
-    <Compile Include="Modules\Foo.cs" />
     <Compile Include="Modules\MediaCommands.cs" />
     <Compile Include="Modules\MessageCommands.cs" />
     <Compile Include="Modules\Reaction.cs" />

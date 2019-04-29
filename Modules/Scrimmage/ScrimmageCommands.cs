@@ -6,6 +6,7 @@ using UsefulDiscordBot.Modules.MessageFormatting;
 namespace UsefulDiscordBot.Modules.Scrimmage
 {
 		[Group("Scrim")]
+		[Summary("Set up a scrimmage between 2 teams")]
 		public class ScrimmageCommands : ModuleBase<SocketCommandContext>
 		{
 

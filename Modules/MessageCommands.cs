@@ -9,6 +9,7 @@ namespace UsefulDiscordBot.Modules
 		[RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
 		[RequireOwner(Group = "Permission")]
 		[Group("clear")]
+		[Summary("Admin only: Command set used to clear messages from Chat Channels")]
     public class MessageCommands : ModuleBase<SocketCommandContext>
     {
 				bool isAdmin => (Context.User as IGuildUser)?.Guild?.Roles.FirstOrDefault(x => x.Name == "Mods") != null;
