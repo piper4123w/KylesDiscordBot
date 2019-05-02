@@ -107,7 +107,7 @@
     <Compile Include="Modules\Decision\DecisionCommands.cs" />
     <Compile Include="Modules\Decision\DecisionMessageParser.cs" />
     <Compile Include="Modules\Decision\DecisionReactions.cs" />
-    <Compile Include="Modules\HelpCommand.cs" />
+    <Compile Include="Modules\Help\HelpCommands.cs" />
     <Compile Include="Modules\MessageFormatting\ChoiceEmojis.cs" />
     <Compile Include="Modules\MessageFormatting\DecisionEmbed.cs" />
     <Compile Include="Modules\MessageFormatting\Error\PlayerCount.cs" />

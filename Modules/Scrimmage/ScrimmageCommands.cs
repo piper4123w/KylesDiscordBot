@@ -5,7 +5,6 @@ using UsefulDiscordBot.Modules.MessageFormatting;
 
 namespace UsefulDiscordBot.Modules.Scrimmage
 {
-		[Group("Scrim")]
 		[Summary("Set up a scrimmage between 2 teams")]
 		public class ScrimmageCommands : ModuleBase<SocketCommandContext>
 		{
@@ -16,7 +15,8 @@ namespace UsefulDiscordBot.Modules.Scrimmage
 				ServerUsers players;
 				ScrimEmbed embed;
 
-				[Command]   //no sub commands
+				[Command("Scrim")]   //no remainder
+				[Summary("Setup a new scirmmage within the current voice channel.")]
 				public async Task SetupScrimmage()
 				{
 						players = players ?? _voiceUsers;
@@ -41,7 +41,8 @@ namespace UsefulDiscordBot.Modules.Scrimmage
 				}
 
 
-				[Command()]	//no sub commands + @mentions
+				[Command("Scrim")]	//no sub commands + @mentions
+				[Remarks("<@UserName>")]
 				[Summary("Setup a new scirmmage within the current voice channel. @Mention users to add them to the scrimmage if they are not in the current voice channel.")]
 				public async Task SetupScrimmage([Remainder] string mentionedUsers )
 				{
