@@ -16,6 +16,15 @@ namespace UsefulDiscordBot.Modules
         public int playtime_forever { get; set; }
         public int? playtime_2weeks { get; set; }
         public GameRequest data = new GameRequest();
+        
+        public static bool operator ==(Game game1, Game game2)
+        {
+            return game1.appid == game2.appid;
+        }
+        public static bool operator !=(Game game1, Game game2)
+        {
+            return game1.appid != game2.appid;
+        }
 
         internal void populateGameInfo()
         {
@@ -77,19 +86,9 @@ namespace UsefulDiscordBot.Modules
             return discordUserName + ',' + discordID + ',' + steamID;
         }
 
-        public SteamUser(string data)
+        public SteamUser(string SteamID)
         {
-            string[] strings = data.Split(',');
-            discordUserName = strings[0];
-            discordID = strings[1];
-            steamID = strings[2];
-        }
 
-        public SteamUser(string n, string di, string si)
-        {
-            discordUserName = n;
-            discordID = di;
-            steamID = si;
         }
 
         internal void populateOwnedGameList()

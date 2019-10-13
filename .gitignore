@@ -11,7 +11,6 @@
 *.pdb
 *.exe
 *.dat
-*.config
 *.CopyComplete
 /obj/Debug
 /obj/Release
