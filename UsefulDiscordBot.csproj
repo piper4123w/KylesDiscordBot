@@ -104,11 +104,13 @@
     <Compile Include="APIObjects\GameRequest.cs" />
     <Compile Include="APIObjects\SteamLibrary.cs" />
     <Compile Include="CustomAttributes.cs" />
+    <Compile Include="Modules\Color\FavoriteColorCommands.cs" />
     <Compile Include="Modules\Decision\DecisionCommands.cs" />
     <Compile Include="Modules\Decision\DecisionMessageParser.cs" />
     <Compile Include="Modules\Decision\DecisionReactions.cs" />
     <Compile Include="Modules\Help\HelpCommands.cs" />
     <Compile Include="Modules\MessageFormatting\ChoiceEmojis.cs" />
+    <Compile Include="Modules\MessageFormatting\ColorViewEmbed.cs" />
     <Compile Include="Modules\MessageFormatting\DecisionEmbed.cs" />
     <Compile Include="Modules\MessageFormatting\Error\PlayerCount.cs" />
     <Compile Include="Modules\MessageFormatting\ListEmbed.cs" />
@@ -133,6 +135,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
