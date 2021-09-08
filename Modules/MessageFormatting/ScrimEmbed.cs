@@ -6,7 +6,7 @@ namespace UsefulDiscordBot.Modules.MessageFormatting
 {
 		public class ScrimEmbed : EmbedBuilder
 		{
-				Color color => new Color(8816262);
+				Discord.Color color => new Discord.Color(8816262);
 
 				public ScrimEmbed(IUser user, string title)
 				{

@@ -15,7 +15,7 @@ namespace UsefulDiscordBot.Modules.Embeds.Error
 
 				DateTimeOffset? _timestamp => DateTime.Now;
 
-				Color? _color => new Color(255, 0, 0);
+				Discord.Color? _color => new Discord.Color(255, 0, 0);
 
 				List<EmbedFieldBuilder> _fields => buildFields();
 

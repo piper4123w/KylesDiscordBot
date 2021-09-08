@@ -7,7 +7,7 @@ namespace UsefulDiscordBot.Modules.MessageFormatting
 {
     public class DecisionEmbed : EmbedBuilder
     {
-        static Color color => new Color(8816262);
+        static Discord.Color color => new Discord.Color(8816262);
 
         public DecisionEmbed(IUser user, string title)
         {
