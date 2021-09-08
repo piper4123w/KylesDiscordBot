@@ -38,7 +38,7 @@ namespace UsefulDiscordBot
 						Add(u);
 				}
 
-				public void makeCapitan(SocketGuildUser captain)
+				public void makeCaptain(SocketGuildUser captain)
 				{
 						if(Count > 0)
 						{

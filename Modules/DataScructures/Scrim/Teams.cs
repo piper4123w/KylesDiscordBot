@@ -9,8 +9,8 @@ namespace UsefulDiscordBot
 				public Team Team1;
 				public Team Team2;
 
-				public SocketGuildUser Capitan1 => Team1[0];
-				public SocketGuildUser Capitan2 => Team2[0];
+				public SocketGuildUser Captain1 => Team1[0];
+				public SocketGuildUser Captain2 => Team2[0];
 
 				public Teams()
 				{
@@ -49,24 +49,24 @@ namespace UsefulDiscordBot
 						Team2.Add(u2);
 				}
 
-				public void AddToCapitansTeam(string capitanMention, SocketGuildUser member)
+				public void AddToCaptainsTeam(string captainMention, SocketGuildUser member)
 				{
-						if (Capitan1.Mention.Equals(capitanMention))
+						if (Captain1.Mention.Equals(captainMention))
 						{
 								Team1.Add(member);
 						}
-						else if (Capitan2.Mention.Equals(capitanMention))
+						else if (Captain2.Mention.Equals(captainMention))
 						{
 								Team2.Add(member);
 						}
 				}
 
-				public void AddToCapitansTeam(SocketGuildUser capitan, SocketGuildUser member)
+				public void AddToCaptainsTeam(SocketGuildUser captain, SocketGuildUser member)
 				{
-						if (capitan.Equals(Capitan1))
+						if (captain.Equals(Captain1))
 						{
 								Team1.Add(member);
-						}else if (capitan.Equals(Capitan2))
+						}else if (captain.Equals(Captain2))
 						{
 								Team2.Add(member);
 						}

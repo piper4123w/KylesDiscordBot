@@ -26,7 +26,7 @@ namespace UsefulDiscordBot.Modules.Scrimmage
 								embed = new ScrimEmbed(Context, "Setting up a Scrimmage");
 								embed.Description = "Select a reaction emoji to proceed";
 								embed.EmbedUserList("Player List", players);
-								embed.AddField("Options", ":question: Random Teams\n:crown: I am Capitan\n:computer: Random Capitans");
+								embed.AddField("Options", ":question: Random Teams\n:crown: I am Captain\n:computer: Random Captains");
 								var msg = await ReplyAsync("Scrimmage", false, embed.Build());
 								var emojis = Scrimmage.ScrimmageReactions.AllEmojis;
 								foreach (var emoji in emojis)

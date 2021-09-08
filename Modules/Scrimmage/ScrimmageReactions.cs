@@ -45,8 +45,8 @@ namespace UsefulDiscordBot.Modules.Scrimmage
 								teams = new Teams(players);
 						}
 						else if (reaction.Emote.Equals(crown))
-						{ //nominate as capitan
-								Console.WriteLine("capitan");
+						{ //nominate as captain
+								Console.WriteLine("captain");
 								if (captianUsers.Count >= 2)
 								{
 										await message.DeleteAsync();
@@ -59,7 +59,7 @@ namespace UsefulDiscordBot.Modules.Scrimmage
 								}
 						}
 						else if (reaction.Emote.Equals(computer))
-						{   //random capitans
+						{   //random captains
 								Console.WriteLine("randCapt");
 								await message.DeleteAsync();
 								captianUsers = new ServerUsers();
@@ -73,13 +73,13 @@ namespace UsefulDiscordBot.Modules.Scrimmage
 						}
 						else if (ChoiceEmojis.All.Contains(reaction.Emote))
 						{   //choice made
-								if (reaction.User.Value.Mention == teams.Capitan1.Mention || reaction.User.Value.Mention == teams.Capitan2.Mention)
+								if (reaction.User.Value.Mention == teams.Captain1.Mention || reaction.User.Value.Mention == teams.Captain2.Mention)
 								{
 										await message.DeleteAsync();
 										Console.WriteLine("choice made");
 										var chosenPlayer = players[ChoiceEmojis.All.IndexOf(new Emoji(reaction.Emote.ToString()))];
 										players.Remove(chosenPlayer);
-										teams.AddToCapitansTeam(reaction.User.Value.Mention, chosenPlayer);
+										teams.AddToCaptainsTeam(reaction.User.Value.Mention, chosenPlayer);
 								}
 								else
 								{
